@@ -13,23 +13,32 @@ var path_generator: PathGenerator
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	path_generator = PathGenerator.new(map_length, map_height)
-	_display_path()
+	_display_path(_create_path(true))
 	_complete_grid()
+	
+
+func _create_path(add_loops: bool) -> Array[Vector2i]:
+	var _path:Array[Vector2i] = path_generator.generate_path()
+	
+	while _path.size() < 35:
+		path_generator.generate_path()
+	
+	if(add_loops):
+		path_generator.add_loops(path_generator.get_loop_candidates())
+		
+	return path_generator.get_path()
+
 
 func _complete_grid():
 	for x in range(map_length):
 		for y in range(map_height):
 			if not path_generator.get_path().has(Vector2i(x,y)):
 				var tile:Node3D = tile_empty.instantiate()
+				
 				add_child(tile)
 				tile.global_position = Vector3(x, 0, y)
 
-func _display_path():
-	var _path:Array[Vector2i] = path_generator.generate_path()
-	
-	
-	while _path.size() < 35:
-		_path = path_generator.generate_path()
+func _display_path(_path:Array[Vector2i]):
 	
 	for element in _path:
 		var tile_rotation = Vector3(0, 0, 0)
