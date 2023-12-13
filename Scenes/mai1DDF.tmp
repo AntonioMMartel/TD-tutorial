@@ -1,0 +1,26 @@
+[gd_scene load_steps=8 format=3 uid="uid://cw1nqx2x4i26m"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_00pk1"]
+[ext_resource type="PackedScene" uid="uid://kfapvo0krven" path="res://assets/tile_cornerRound.glb" id="2_rdgyd"]
+[ext_resource type="PackedScene" uid="uid://bdrnn6npdar2e" path="res://assets/tile_straight.glb" id="3_6dxp4"]
+[ext_resource type="PackedScene" uid="uid://c6gxxdpkt0iev" path="res://assets/tile_endRoundSpawn.glb" id="4_ja05g"]
+[ext_resource type="PackedScene" uid="uid://cfmwnsfmblns3" path="res://assets/tile.glb" id="5_6atj1"]
+[ext_resource type="PackedScene" uid="uid://brj1k4f7ddhcv" path="res://assets/tile_crossing.glb" id="6_ahu7s"]
+[ext_resource type="PackedScene" uid="uid://d3rg6vsb1017w" path="res://Scenes/basic_enemy.tscn" id="7_qnowj"]
+
+[node name="main" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.754776, 1.24768)
+script = ExtResource("1_00pk1")
+path_corner = ExtResource("2_rdgyd")
+path_straight = ExtResource("3_6dxp4")
+path_start = ExtResource("4_ja05g")
+tile_empty = ExtResource("5_6atj1")
+path_crossing = ExtResource("6_ahu7s")
+basic_enemy = ExtResource("7_qnowj")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.14484, 0.989455, 0, -0.989455, 0.14484, 8, 2.49733, 4.02552)
+fov = 120.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.80237, 0.359105, 0.476704, -0.596827, 0.482778, 0.640877, 0, -0.79873, 0.60169, 11.4982, 6.92025, 0)

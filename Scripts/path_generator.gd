@@ -1,39 +1,51 @@
-extends Object
+extends Node
 class_name PathGenerator
 
 var _grid_lenght: int
 var _grid_height: int
+var _min_path_size: int
 
 var _path: Array[Vector2i]
 
-func _init(length:int, height:int):
-	_grid_lenght = length
-	_grid_height = height
+
+var path_config:PathGeneratorConfig = preload("res://Resources/basic_path_config.tres")
+
+func _init():
+	_grid_lenght = path_config.map_length
+	_grid_height = path_config.map_height
+	_min_path_size = path_config.min_path_size
+	generate_path()
+
 
 # Por donde pasan los bichos
 func generate_path():
-	_path.clear() # Regenerates path
-	
-	var x:int = 0
-	var y:int = int(_grid_height / 2)
-	
-	while x < _grid_lenght:
-#		Si ya existe esa coordenada del path no lo pongas
-		if not _path.has(Vector2i(x, y)):
-			_path.append(Vector2i(x,y))
-			
-#		Valor aleatorio para que sea mas original el path
-
-		var choice:int = randi_range(0, 2)
+	while _path.size() < _min_path_size:
+		_path.clear() # Regenerates path
 		
-#		En valores pares de x o 1/3 veces vamos a añadir path en el eje y y no en el x
-		if choice == 0 or x % 2 == 0 or x == _grid_lenght - 1:
-			x += 1
-#		Else sube o baja
-		elif choice == 1 and y < _grid_height - 2 and not _path.has(Vector2i(x, y+1)):
-			y += 1
-		elif choice == 2 and y > 1 and not _path.has(Vector2i(x, y - 1)):
-			y -= 1
+		var x:int = 0
+		var y:int = int(_grid_height / 2)
+			
+		
+			
+		while x < _grid_lenght:
+	#		Si ya existe esa coordenada del path no lo pongas
+			if not _path.has(Vector2i(x, y)):
+				_path.append(Vector2i(x,y))
+				
+	#		Valor aleatorio para que sea mas original el path
+
+			var choice:int = randi_range(0, 2)
+			
+	#		En valores pares de x o 1/3 veces vamos a añadir path en el eje y y no en el x
+			if choice == 0 or x % 2 == 0 or x == _grid_lenght - 1:
+				x += 1
+	#		Else sube o baja
+			elif choice == 1 and y < _grid_height - 2 and not _path.has(Vector2i(x, y+1)):
+				y += 1
+			elif choice == 2 and y > 1 and not _path.has(Vector2i(x, y - 1)):
+				y -= 1
+		
+		
 		
 	return _path
 
@@ -48,8 +60,15 @@ func get_tile_rotation_score(tile: Vector2i) -> Array:
 	
 	return score
 	
-func get_path():
+func get_path_route():
 	return _path
+	
+func get_map_height():
+	return _grid_height
+
+
+func get_map_length():
+	return _grid_lenght
 	
 # Square area
 func is_area_free(center: Vector2i, area:int, center_offset:Vector2i = Vector2i(0,0), ignore:Array[Vector2i] = []):
@@ -83,7 +102,6 @@ func add_loops(loop_candidates:Dictionary, number_of_loops:int = 1):
 	for loop_candidate in loop_candidates.keys():
 		var count = 0
 		var loop = []
-		print(loop_candidate, "-->",loop_candidates[loop_candidate] )
 		var x = loop_candidate.x
 		var y = loop_candidate.y
 		# Select what type of loop will be made

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="path_gen_config" load_steps=2 format=3 uid="uid://c0p8abi4rpaby"]
+
+[ext_resource type="Script" path="res://Scripts/path_gen_config.gd" id="1_itigv"]
+
+[resource]
+script = ExtResource("1_itigv")
+map_length = 16
+map_height = 9
