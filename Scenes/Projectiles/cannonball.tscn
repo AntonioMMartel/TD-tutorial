@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0hl7732akrs5"]
+
+[ext_resource type="Script" path="res://Scripts/cannonball.gd" id="1_3p3sk"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_o3d0c"]
+radius = 0.100469
+
+[sub_resource type="SphereMesh" id="SphereMesh_hfmjm"]
+radius = 0.1
+height = 0.2
+radial_segments = 32
+rings = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lu6gv"]
+albedo_color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="Area3D" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_3p3sk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_o3d0c")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+mesh = SubResource("SphereMesh_hfmjm")
+material = SubResource("StandardMaterial3D_lu6gv")

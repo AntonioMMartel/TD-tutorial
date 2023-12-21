@@ -1,0 +1,20 @@
+[gd_scene load_steps=6 format=3 uid="uid://1c8xsphim0fs"]
+
+[ext_resource type="Script" path="res://Scripts/towersButton.gd" id="1_rua0l"]
+[ext_resource type="Texture2D" uid="uid://chct1fy5q6cxt" path="res://images/cannon rezized.png" id="2_vd3d8"]
+[ext_resource type="PackedScene" uid="uid://bnrwsgbaww746" path="res://Scenes/cannon_turret_draggable.tscn" id="3_0m8dv"]
+[ext_resource type="PackedScene" uid="uid://7gjn5sdo3huv" path="res://Scenes/Towers/cannon_turret.tscn" id="3_l8eg3"]
+[ext_resource type="Material" uid="uid://jwp248hp13p3" path="res://Materials/red_transparent.material" id="5_owf85"]
+
+[node name="Button" type="Button"]
+custom_minimum_size = Vector2(96, 96)
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_rua0l")
+button_icon = ExtResource("2_vd3d8")
+draggable = ExtResource("3_0m8dv")
+instance = ExtResource("3_l8eg3")
+_error_mat = ExtResource("5_owf85")
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]

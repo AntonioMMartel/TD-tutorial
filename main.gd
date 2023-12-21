@@ -14,26 +14,27 @@ func _ready():
 	_display_path(_create_path())
 	_complete_grid()
 	spawn_enemies()
-
-func _physics_process(delta):
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		# Espacio 3D del mundo (Viewport)
-		var space_state = get_world_3d().direct_space_state
-		# Posicion del raton
-		var mouse_pos:Vector2 = get_viewport().get_mouse_position()
-		# El rayo aparece en origin (sacado en funcion de la perspectiva de la camara)
-		var origin:Vector3 = camera.project_ray_origin(mouse_pos)
-		# Y llega hasta end (en funcion de la perspectiva de la camara)
-		var end:Vector3 = origin + camera.project_ray_normal(mouse_pos) * RAYCAST_LENGTH
-		# Creas un rayo que vaya de origin a end
-		var query = PhysicsRayQueryParameters3D.create(origin, end)
-		# Que choque con cosas
-		query.collide_with_areas = true
-		# Invoca el rayo
-		var rayResult:Dictionary = space_state.intersect_ray(query)
-		if rayResult.size() > 0:
-			var co:CollisionObject3D = rayResult.get("collider")
-			print(co.get_groups())
+#
+#func _physics_process(delta):
+#	# Raycast test
+#	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+#		# Espacio 3D del mundo (Viewport)
+#		var space_state = get_world_3d().direct_space_state
+#		# Posicion del raton
+#		var mouse_pos:Vector2 = get_viewport().get_mouse_position()
+#		# El rayo aparece en origin (sacado en funcion de la perspectiva de la camara)
+#		var origin:Vector3 = camera.project_ray_origin(mouse_pos)
+#		# Y llega hasta end (en funcion de la perspectiva de la camara)
+#		var end:Vector3 = origin + camera.project_ray_normal(mouse_pos) * RAYCAST_LENGTH
+#		# Creas un rayo que vaya de origin a end
+#		var query = PhysicsRayQueryParameters3D.create(origin, end)
+#		# Que choque con cosas
+#		query.collide_with_areas = true
+#		# Invoca el rayo
+#		var rayResult:Dictionary = space_state.intersect_ray(query)
+#		if rayResult.size() > 0:
+#			var co:CollisionObject3D = rayResult.get("collider")
+#			print(co.get_groups())
 
 func _create_path() -> Array[Vector2i]:
 	return PathGeneratorSingleton.get_path_route()

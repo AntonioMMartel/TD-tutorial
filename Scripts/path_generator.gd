@@ -46,7 +46,7 @@ func generate_path():
 				y -= 1
 		
 		
-		
+	# add_loops(get_loop_candidates())
 	return _path
 
 func get_tile_rotation_score(tile: Vector2i) -> Array:

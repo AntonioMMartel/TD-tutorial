@@ -1,11 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://d3rg6vsb1017w"]
+[gd_scene load_steps=12 format=3 uid="uid://d3rg6vsb1017w"]
 
-[ext_resource type="Script" path="res://Scripts/BasicEnemy.gd" id="1_5vuft"]
-[ext_resource type="PackedScene" uid="uid://byyxmwpju77sk" path="res://assets/enemy_ufoRed.glb" id="2_td5i0"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_4aowr"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_g6v66"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_6s18v"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_ufc3n"]
+[ext_resource type="Script" path="res://Scripts/BasicEnemy.gd" id="1_8wew5"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="2_l4c77"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_qp1yu"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_o6pxb"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_i8dna"]
+[ext_resource type="PackedScene" uid="uid://byyxmwpju77sk" path="res://assets/enemy_ufoRed.glb" id="6_v5hna"]
 
 [sub_resource type="Animation" id="Animation_j5h2s"]
 resource_name = "Despawn"
@@ -47,8 +47,12 @@ _data = {
 "Spawn": SubResource("Animation_6gkmj")
 }
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_q0e1f"]
+height = 0.6
+radius = 0.4
+
 [node name="BasicEnemy" type="Node3D"]
-script = ExtResource("1_5vuft")
+script = ExtResource("1_8wew5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 speed_scale = 3.0
@@ -57,43 +61,53 @@ libraries = {
 }
 
 [node name="StateChart" type="Node" parent="."]
-script = ExtResource("3_4aowr")
+script = ExtResource("2_l4c77")
 
 [node name="EnemyState" type="Node" parent="StateChart"]
-script = ExtResource("4_g6v66")
+script = ExtResource("3_qp1yu")
 initial_state = NodePath("Spawning")
 
 [node name="Spawning" type="Node" parent="StateChart/EnemyState"]
-script = ExtResource("5_6s18v")
+script = ExtResource("4_o6pxb")
 
 [node name="ToTravelling" type="Node" parent="StateChart/EnemyState/Spawning"]
-script = ExtResource("5_ufc3n")
+script = ExtResource("5_i8dna")
 to = NodePath("../../Travelling")
 event = &"to_travelling"
 
 [node name="Travelling" type="Node" parent="StateChart/EnemyState"]
-script = ExtResource("5_6s18v")
+script = ExtResource("4_o6pxb")
 
 [node name="ToDespawning" type="Node" parent="StateChart/EnemyState/Travelling"]
-script = ExtResource("5_ufc3n")
+script = ExtResource("5_i8dna")
 to = NodePath("../../Despawning")
 event = &"to_despawning"
 
 [node name="Despawning" type="Node" parent="StateChart/EnemyState"]
-script = ExtResource("5_6s18v")
+script = ExtResource("4_o6pxb")
 
 [node name="Dying" type="Node" parent="StateChart/EnemyState"]
-script = ExtResource("5_6s18v")
+script = ExtResource("4_o6pxb")
 
 [node name="Path3D" type="Path3D" parent="."]
 
 [node name="PathFollow3D" type="PathFollow3D" parent="Path3D"]
 loop = false
 
-[node name="enemy_ufoRed" parent="Path3D/PathFollow3D" instance=ExtResource("2_td5i0")]
+[node name="enemy_ufoRed" parent="Path3D/PathFollow3D" instance=ExtResource("6_v5hna")]
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, 0, 0.25, 0)
+
+[node name="Hitbox" type="Area3D" parent="Path3D/PathFollow3D/enemy_ufoRed"]
+transform = Transform3D(1.66667, 0, 0, 0, 1.66667, 0, 0, 0, 1.66667, 0, -0.416667, 0)
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/enemy_ufoRed/Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_q0e1f")
 
 [connection signal="state_entered" from="StateChart/EnemyState/Spawning" to="." method="_on_spawning_state_entered"]
 [connection signal="state_entered" from="StateChart/EnemyState/Travelling" to="." method="_on_travelling_state_entered"]
 [connection signal="state_processing" from="StateChart/EnemyState/Travelling" to="." method="_on_travelling_state_processing"]
 [connection signal="state_entered" from="StateChart/EnemyState/Despawning" to="." method="_on_despawning_state_entered"]
+[connection signal="area_entered" from="Path3D/PathFollow3D/enemy_ufoRed/Hitbox" to="." method="_on_hitbox_area_entered"]

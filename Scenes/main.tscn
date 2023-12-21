@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cw1nqx2x4i26m"]
+[gd_scene load_steps=13 format=3 uid="uid://cw1nqx2x4i26m"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_00pk1"]
 [ext_resource type="PackedScene" uid="uid://b0rd7lws25rms" path="res://Scenes/path/tile_corner.tscn" id="2_uatty"]
@@ -9,7 +9,15 @@
 [ext_resource type="PackedScene" uid="uid://1bw5a30yuwd6" path="res://Scenes/path/tile_crossing.tscn" id="6_agk5p"]
 [ext_resource type="PackedScene" uid="uid://culxgv7x8dj48" path="res://Scenes/path/tile_crystal.tscn" id="6_heche"]
 [ext_resource type="PackedScene" uid="uid://f55go6lj0b5q" path="res://Scenes/path/tile_rock.tscn" id="7_m3105"]
-[ext_resource type="PackedScene" uid="uid://d3rg6vsb1017w" path="res://Scenes/basic_enemy.tscn" id="7_qnowj"]
+[ext_resource type="PackedScene" uid="uid://d3rg6vsb1017w" path="res://Scenes/Enemies/basic_enemy.tscn" id="10_3iwdi"]
+[ext_resource type="PackedScene" uid="uid://1c8xsphim0fs" path="res://Scenes/UI/towers_button.tscn" id="11_7qlq2"]
+
+[sub_resource type="Environment" id="Environment_eo37h"]
+background_mode = 1
+background_color = Color(0.203922, 0.203922, 0.203922, 1)
+ssao_enabled = true
+adjustment_enabled = true
+adjustment_contrast = 1.25
 
 [node name="main" type="Node3D"]
 script = ExtResource("1_00pk1")
@@ -18,12 +26,37 @@ path_straight = ExtResource("3_kp8oo")
 path_start = ExtResource("4_kdw5a")
 misc_tiles = Array[PackedScene]([ExtResource("5_ubw44"), ExtResource("6_heche"), ExtResource("7_m3105"), ExtResource("5_hnpq2"), ExtResource("5_hnpq2"), ExtResource("5_hnpq2"), ExtResource("5_hnpq2"), ExtResource("5_hnpq2"), ExtResource("5_hnpq2")])
 path_crossing = ExtResource("6_agk5p")
-basic_enemy = ExtResource("7_qnowj")
+basic_enemy = ExtResource("10_3iwdi")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.342971, 0.939346, 0, -0.939346, 0.342971, 8.15502, 5.84901, 6.92953)
+transform = Transform3D(1, 0, 0, 0, 0.342971, 0.939346, 0, -0.939346, 0.342971, 8, 5.8, 7)
 current = true
 fov = 80.0
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.80237, 0.359105, 0.476704, -0.596827, 0.482778, 0.640877, 0, -0.79873, 0.60169, 11.4982, 6.92025, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eo37h")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TowersButton" parent="Control" instance=ExtResource("11_7qlq2")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -48.0
+offset_top = -107.0
+offset_right = 48.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 0
