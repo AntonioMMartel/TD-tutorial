@@ -2,10 +2,13 @@ extends Node3D
 
 var curve3d: Curve3D
 var enemy_progress:float = 0
+
+var damage:int = 1
+var health:int = 100
 var enemy_speed:float = 5
 
 func _ready():
-	
+
 	curve3d = Curve3D.new()
 	
 #	PathGeneratorSingleton.get_path_route
@@ -21,8 +24,10 @@ func _ready():
 
 
 func _on_spawning_state_entered():
+	
 	$AnimationPlayer.play("Spawn")
 	await $AnimationPlayer.animation_finished
+	
 	$StateChart.send_event("to_travelling")
 
 func _on_travelling_state_entered():
@@ -40,7 +45,11 @@ func _on_despawning_state_entered():
 	queue_free()
 	
 func _on_hitbox_area_entered(area):
-	print("Pimba")
+	if area is Projectile:
+		health -= area.damage
+		if health <= 0:
+			queue_free()
+			
 
 
 

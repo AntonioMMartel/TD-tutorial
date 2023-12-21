@@ -4,8 +4,9 @@ class_name Projectile
 var starting_position:Vector3
 var target:Node3D
 
-@export var speed:float = 2
+@export var speed:float = 4
 var lerp_pos:float = 0
+@export var damage:int = 20
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
